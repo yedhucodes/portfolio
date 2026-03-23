@@ -1,210 +1,114 @@
 "use client";
 
-import { Code2, Cpu, Globe, Sparkles } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
+import { Trophy, Users, GitFork, Award } from "lucide-react";
 
 const highlights = [
-  { icon: Code2, label: "50+ Projects Built", color: "#3b82f6" },
-  { icon: Cpu, label: "Automation Expert", color: "#8b5cf6" },
-  { icon: Globe, label: "Freelance Ready", color: "#22c55e" },
-  { icon: Sparkles, label: "AI-Powered Tools", color: "#f59e0b" },
+  { icon: Trophy,  label: "15+ Live Projects",          accentColor: "var(--accent)" },
+  { icon: Users,   label: "Hackathon Mentor",            accentColor: "var(--accent)" },
+  { icon: GitFork, label: "Assisted Many Projects",      accentColor: "var(--accent-yellow)" },
+  { icon: Award,   label: "Biz Idea Competition Winner", accentColor: "var(--accent-yellow)" },
 ];
 
 export default function About() {
+  const { ref: sectionRef, inView } = useInView(0.1);
+
   return (
     <section
       id="about"
-      style={{
-        padding: "6rem 0",
-        position: "relative",
-        zIndex: 1,
-        background: "linear-gradient(180deg, transparent 0%, rgba(0,102,255,0.02) 50%, transparent 100%)",
-      }}
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      style={{ padding: "6rem 0", background: "var(--bg-alt)", position: "relative" }}
     >
-      {/* Divider top */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: "1px",
-        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)",
-      }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "var(--divider)" }} />
 
       <div className="container">
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)",
-          gap: "4rem",
-          alignItems: "center",
-        }}
-          className="about-grid"
-        >
-          {/* Left — Text */}
-          <div>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              background: "rgba(0,102,255,0.08)", border: "1px solid rgba(0,102,255,0.2)",
-              borderRadius: 999, padding: "4px 14px", marginBottom: 24,
-            }}>
-              <span style={{ fontSize: 11, color: "#60a5fa", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                About Me
-              </span>
-            </div>
+        <div className={`reveal ${inView ? "visible" : ""}`} style={{ marginBottom: "3.5rem" }}>
+          <span style={{
+            display: "inline-block", marginBottom: 16,
+            fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+            padding: "3px 10px", background: "var(--accent)", color: "#0a0a0a",
+            border: "1px solid var(--border-color)", fontFamily: "'Space Grotesk', sans-serif",
+          }}>About</span>
+          <h2 style={{
+            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            fontWeight: 800, letterSpacing: "-0.04em",
+            lineHeight: 1.0, color: "var(--text-primary)",
+          }}>
+            I TURN COMPLEX
+            <br />
+            <span style={{ background: "var(--accent)", padding: "0 6px", color: "#0a0a0a" }}>PROBLEMS</span>
+            {" "}INTO
+            <br />
+            SOLUTIONS.
+          </h2>
+        </div>
 
-            <h2 style={{
-              fontSize: "clamp(2rem, 4.5vw, 3rem)",
-              fontWeight: 800,
-              letterSpacing: "-0.035em",
-              lineHeight: 1.1,
-              marginBottom: "1.5rem",
-              color: "#f8fafc",
-            }}>
-              I turn complex problems
-              <span style={{
-                display: "block",
-                background: "linear-gradient(135deg, #60a5fa, #3b82f6)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                into elegant solutions.
-              </span>
-            </h2>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
-              {[
-                `I'm Yedhu Krishnan, an Automation Engineer and Full-Stack Developer who obsesses over making things work — faster, smarter, and at scale.`,
-                `My journey started with a simple idea: every repetitive task is a bug waiting to be fixed. That mindset led me to build everything from POS systems and WhatsApp bots to machine learning models and interactive web platforms.`,
-                `I work with clients who need solutions that actually ship — production-ready systems that integrate APIs, automate workflows, and save dozens of hours every week.`,
-              ].map((text, i) => (
-                <p key={i} style={{ color: "#64748b", lineHeight: 1.8, fontSize: "0.95rem" }}>
-                  {i === 0 ? (
-                    <><strong style={{ color: "#cbd5e1" }}>I&apos;m Yedhu Krishnan</strong>{text.slice(14)}</>
-                  ) : text}
-                </p>
-              ))}
-            </div>
-
-            <div style={{ display: "flex", gap: 12, marginTop: "2rem", flexWrap: "wrap" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start" }} className="about-grid">
+          {/* Left */}
+          <div className={`reveal-left ${inView ? "visible" : ""}`}>
+            {[
+              { bold: "I'm Yedhu Krishnan,", rest: " an Automation Engineer and Full-Stack Developer who obsesses over making things work — faster, smarter, and at scale." },
+              { rest: "My journey started with a simple idea: every repetitive task is a bug waiting to be fixed. That mindset led me to build POS systems, WhatsApp bots, machine learning models, and interactive web platforms." },
+              { rest: "I work with clients who need solutions that actually ship — production-ready systems that integrate APIs, automate workflows, and save dozens of hours every week." },
+            ].map((p, i) => (
+              <p key={i} style={{ color: "var(--text-muted)", lineHeight: 1.8, fontSize: "0.95rem", marginBottom: "1rem" }}>
+                {p.bold ? <><strong style={{ color: "var(--text-primary)" }}>{p.bold}</strong>{p.rest}</> : p.rest}
+              </p>
+            ))}
+            <div style={{ display: "flex", gap: 12, marginTop: "1.5rem", flexWrap: "wrap" }}>
               <a href="#projects" style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
-                background: "linear-gradient(135deg, #0066FF, #3b82f6)",
-                color: "#fff", borderRadius: 8, padding: "11px 22px",
-                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700,
-                fontSize: "0.85rem", textDecoration: "none",
-                boxShadow: "0 0 20px rgba(0,102,255,0.3)",
-                transition: "all 0.2s",
-              }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ""; }}
-              >
-                See My Work
-              </a>
+                background: "var(--accent)", color: "#0a0a0a", border: "2px solid var(--border-color)",
+                padding: "12px 24px", fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 700, fontSize: "0.85rem", letterSpacing: "0.04em", textTransform: "uppercase",
+                textDecoration: "none", transition: "all 0.15s",
+              }}>See My Work</a>
               <a href="#contact" style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
-                background: "rgba(255,255,255,0.04)", color: "#94a3b8",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: 8, padding: "11px 22px",
-                fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600,
-                fontSize: "0.85rem", textDecoration: "none", transition: "all 0.2s",
-              }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(59,130,246,0.35)";
-                  (e.currentTarget as HTMLElement).style.color = "#7dd3fc";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)";
-                  (e.currentTarget as HTMLElement).style.color = "#94a3b8";
-                }}
-              >
-                Let&apos;s Collaborate
-              </a>
+                background: "transparent", color: "var(--text-primary)", border: "2px solid var(--border-color)",
+                padding: "12px 24px", fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 700, fontSize: "0.85rem", letterSpacing: "0.04em", textTransform: "uppercase",
+                textDecoration: "none", transition: "all 0.15s",
+              }}>Collaborate</a>
             </div>
           </div>
 
-          {/* Right — Cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
-            {/* 2x2 highlight grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.875rem" }}>
-              {highlights.map((h) => (
-                <div
-                  key={h.label}
+          {/* Right */}
+          <div className={`reveal-right ${inView ? "visible" : ""}`}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "1rem" }}>
+              {highlights.map((h, i) => (
+                <div key={h.label}
+                  className={`reveal reveal-delay-${i + 1} ${inView ? "visible" : ""}`}
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: 16, padding: "1rem",
-                    display: "flex", alignItems: "center", gap: 12,
-                    transition: "all 0.3s",
-                    backdropFilter: "blur(12px)",
-                    cursor: "default",
+                    background: "var(--text-primary)", border: "2px solid var(--border-color)",
+                    padding: "1rem", display: "flex", alignItems: "center", gap: 10,
+                    transition: "transform 0.2s", cursor: "default",
                   }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = `${h.color}45`;
-                    (e.currentTarget as HTMLElement).style.background = `${h.color}09`;
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 25px ${h.color}18`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)";
-                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
-                    (e.currentTarget as HTMLElement).style.transform = "";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "";
-                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = "translate(-2px, -2px)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = "")}
                 >
-                  <div style={{
-                    width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    background: `${h.color}18`, border: `1px solid ${h.color}28`,
-                  }}>
-                    <h.icon size={16} style={{ color: h.color }} />
-                  </div>
-                  <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "#e2e8f0", fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.3 }}>
+                  <h.icon size={16} style={{ color: h.accentColor, flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.78rem", fontWeight: 700, color: h.accentColor, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.3 }}>
                     {h.label}
                   </span>
                 </div>
               ))}
             </div>
 
-            {/* Currently building card */}
-            <div style={{
-              background: "linear-gradient(135deg, rgba(0,102,255,0.07), rgba(99,102,241,0.04))",
-              border: "1px solid rgba(0,102,255,0.2)",
-              borderRadius: 20, padding: "1.25rem",
-              backdropFilter: "blur(12px)",
-              boxShadow: "0 0 30px rgba(0,102,255,0.08)",
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                <span className="status-dot" />
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#4ade80", fontFamily: "'Space Grotesk', sans-serif", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                  Currently Building
-                </span>
-              </div>
-              <p style={{ fontSize: "0.88rem", fontWeight: 600, color: "#f1f5f9", fontFamily: "'Space Grotesk', sans-serif", marginBottom: 6 }}>
-                AI-Powered POS &amp; Workflow Automation Suite
-              </p>
-              <p style={{ fontSize: "0.78rem", color: "#475569", lineHeight: 1.6 }}>
-                Integrating AI into business operations · WhatsApp-first ordering · Real-time analytics
-              </p>
-            </div>
-
-            {/* Stats row */}
-            <div style={{
-              display: "grid", gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "0.75rem",
-            }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem" }}>
               {[
-                { value: "50+", label: "Projects" },
-                { value: "3+", label: "Years Exp" },
+                { value: "15+", label: "Live Projects" },
+                { value: "3+",  label: "Years Exp" },
                 { value: "100%", label: "Shipped" },
               ].map((stat) => (
                 <div key={stat.label} style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 14, padding: "0.875rem",
-                  textAlign: "center", backdropFilter: "blur(12px)",
+                  border: "2px solid var(--border-color)", padding: "1rem",
+                  textAlign: "center", background: "var(--card-bg)",
                 }}>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 800, color: "#f8fafc", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.03em" }}>
+                  <div style={{ fontSize: "1.8rem", fontWeight: 800, color: "var(--text-primary)", fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "-0.04em", lineHeight: 1 }}>
                     {stat.value}
                   </div>
-                  <div style={{ fontSize: "0.72rem", color: "#475569", marginTop: 2, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: 4, fontFamily: "'Space Grotesk', sans-serif", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                     {stat.label}
                   </div>
                 </div>
@@ -214,19 +118,8 @@ export default function About() {
         </div>
       </div>
 
-      {/* Divider bottom */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: "1px",
-        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)",
-      }} />
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @media (max-width: 768px) {
-          .about-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      ` }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "3px", background: "var(--divider)" }} />
+      <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .about-grid { grid-template-columns: 1fr !important; } }` }} />
     </section>
   );
 }

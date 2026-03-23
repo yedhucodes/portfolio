@@ -1,468 +1,155 @@
 "use client";
 
 import { useState, useRef } from "react";
-import {
-  Mail, MessageCircle, Github, Send, User, FileText,
-  CheckCircle, AlertCircle, Loader2
-} from "lucide-react";
-
-const projectTypes = [
-  "Automation System",
-  "Web Application",
-  "POS Development",
-  "WhatsApp Bot",
-  "Workflow Automation",
-  "AI Tool",
-  "Other",
-];
+import { useInView } from "@/hooks/useInView";
+import { Mail, MessageCircle, Github, Send, User, ChevronDown } from "lucide-react";
 
 const socialLinks = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "yedhukrishnantv64@gmail.com",
-    href: "mailto:yedhukrishnantv64@gmail.com",
-    color: "#3b82f6",
-    description: "Best for detailed project briefs",
-  },
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: "+91 8078276836",
-    href: "https://wa.me/918078276836",
-    color: "#22c55e",
-    description: "Fastest response · usually within 2h",
-  },
-  {
-    icon: Github,
-    label: "GitHub",
-    value: "github.com/xLUFFY007",
-    href: "https://github.com/xLUFFY007",
-    color: "#94a3b8",
-    description: "Browse my open-source work",
-  },
+  { icon: Mail,          label: "Email",    value: "yedhukrishnantv64@gmail.com", href: "mailto:yedhukrishnantv64@gmail.com", color: "#a3e635" },
+  { icon: MessageCircle, label: "WhatsApp", value: "+91 8078276836",               href: "https://wa.me/918078276836",         color: "#fbbf24" },
+  { icon: Github,        label: "GitHub",   value: "github.com/xLUFFY007",         href: "https://github.com/xLUFFY007",       color: "#60a5fa" },
 ];
 
-type FormState = {
-  name: string;
-  email: string;
-  projectType: string;
-  message: string;
-};
-
-type Status = "idle" | "submitting" | "success" | "error";
-
-function sanitize(str: string) {
-  return str.replace(/[<>]/g, "").trim();
-}
-
-function validate(form: FormState): string | null {
-  if (!form.name || form.name.length < 2) return "Please enter your full name.";
-  if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-    return "Please enter a valid email address.";
-  if (!form.projectType) return "Please select a project type.";
-  if (!form.message || form.message.length < 20)
-    return "Message should be at least 20 characters.";
-  if (form.message.length > 2000) return "Message is too long (max 2000 chars).";
-  return null;
-}
-
 export default function Contact() {
-  const [form, setForm] = useState<FormState>({
-    name: "",
-    email: "",
-    projectType: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<Status>("idle");
-  const [error, setError] = useState<string | null>(null);
-  const lastSubmit = useRef<number>(0);
+  const { ref: sectionRef, inView } = useInView(0.1);
+  const [formData, setFormData] = useState({ name: "", email: "", projectType: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const lastSentRef = useRef(0);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    setError(null);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Rate-limit: prevent spam (10s cooldown)
     const now = Date.now();
-    if (now - lastSubmit.current < 10000) {
-      setError("Please wait a moment before submitting again.");
-      return;
-    }
-
-    const sanitized: FormState = {
-      name: sanitize(form.name),
-      email: sanitize(form.email),
-      projectType: form.projectType,
-      message: sanitize(form.message),
-    };
-
-    const validationError = validate(sanitized);
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
-    setStatus("submitting");
-    lastSubmit.current = now;
-
-    // Simulated submit (replace with your form backend / Formspree / etc.)
-    try {
-      await new Promise((res) => setTimeout(res, 1500));
-      setStatus("success");
-      setForm({ name: "", email: "", projectType: "", message: "" });
-    } catch {
-      setStatus("error");
-      setError("Something went wrong. Please email me directly.");
-    }
+    if (now - lastSentRef.current < 10000) return;
+    lastSentRef.current = now;
+    setSending(true);
+    setTimeout(() => { setSending(false); setSent(true); setFormData({ name: "", email: "", projectType: "", message: "" }); }, 1400);
   };
 
   const inputStyle: React.CSSProperties = {
-    width: "100%",
-    background: "rgba(255,255,255,0.03)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: "0.625rem",
-    padding: "0.75rem 1rem",
-    color: "#f1f5f9",
-    fontSize: "0.875rem",
-    fontFamily: "'Inter', sans-serif",
-    outline: "none",
-    transition: "border-color 0.2s, box-shadow 0.2s",
-  };
-
-  const labelStyle: React.CSSProperties = {
-    display: "block",
-    fontSize: "0.78rem",
-    fontWeight: 600,
-    color: "#64748b",
-    fontFamily: "'Space Grotesk', sans-serif",
-    letterSpacing: "0.04em",
-    textTransform: "uppercase",
-    marginBottom: "0.4rem",
+    width: "100%", padding: "12px 14px",
+    border: "2px solid var(--border-color)", background: "var(--card-bg)",
+    fontFamily: "'Space Grotesk', sans-serif", fontSize: "0.88rem",
+    color: "var(--text-primary)", outline: "none", transition: "border-color 0.15s",
   };
 
   return (
-    <section id="contact" className="section-padding relative" style={{ zIndex: 1 }}>
-      {/* Background glow */}
-      <div
-        style={{
-          position: "absolute",
-          width: "500px", height: "500px",
-          bottom: "-100px", right: "-100px",
-          background: "radial-gradient(circle, rgba(0,102,255,0.08) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          pointerEvents: "none",
-        }}
-      />
+    <section id="contact" ref={sectionRef as React.RefObject<HTMLElement>}
+      style={{ padding: "6rem 0", background: "var(--bg)", position: "relative" }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "var(--divider)" }} />
 
       <div className="container">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="tech-tag mb-4" style={{ display: "inline-block" }}>
-            Contact
-          </p>
-          <h2
-            style={{
-              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.03em",
-              marginBottom: "1rem",
-            }}
-          >
-            Let&apos;s Build Something
+        <div className={`reveal ${inView ? "visible" : ""}`} style={{ marginBottom: "3rem" }}>
+          <span style={{
+            display: "inline-block", marginBottom: 16,
+            fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+            padding: "3px 10px", background: "var(--accent)", color: "#0a0a0a",
+            border: "1px solid var(--border-color)", fontFamily: "'Space Grotesk', sans-serif",
+          }}>Contact</span>
+          <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.0, color: "var(--text-primary)" }}>
+            LET&apos;S{" "}<span style={{ background: "var(--accent)", padding: "0 6px", color: "#0a0a0a" }}>BUILD</span> SOMETHING
           </h2>
-          <p style={{ color: "#64748b", maxWidth: "480px", margin: "0 auto", fontSize: "0.9rem" }}>
+          <p style={{ color: "var(--text-muted)", marginTop: "1rem", fontSize: "0.95rem" }}>
             Have a project? Send me a message and I&apos;ll get back to you within 24 hours.
           </p>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "2rem",
-            alignItems: "start",
-          }}
-        >
-          {/* Left — Contact Channels */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.href.startsWith("mailto") ? undefined : "_blank"}
-                rel="noopener noreferrer"
-                className="glass rounded-2xl p-5 flex items-center gap-4 transition-all duration-300"
-                style={{ textDecoration: "none" }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = `${link.color}35`;
-                  el.style.transform = "translateX(6px)";
-                  el.style.background = `${link.color}06`;
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "2rem", alignItems: "start" }} className="contact-grid">
+          {/* Left */}
+          <div className={`reveal-left ${inView ? "visible" : ""}`} style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+            {socialLinks.map((link, i) => (
+              <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
+                className={`reveal reveal-delay-${i + 1} ${inView ? "visible" : ""}`}
+                style={{
+                  display: "flex", alignItems: "center", gap: 14,
+                  border: "2px solid var(--border-color)", background: "var(--card-bg)",
+                  padding: "1rem", textDecoration: "none", transition: "transform 0.15s, background 0.15s",
                 }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "";
-                  el.style.transform = "";
-                  el.style.background = "";
-                }}
-              >
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: `${link.color}15`, border: `1px solid ${link.color}25` }}
-                >
-                  <link.icon size={20} style={{ color: link.color }} />
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.transform = "translate(-3px, -3px)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--card-bg)"; (e.currentTarget as HTMLElement).style.transform = ""; }}>
+                <div style={{ width: 40, height: 40, background: link.color, border: "2px solid var(--border-color)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <link.icon size={18} color="#0a0a0a" />
                 </div>
                 <div>
-                  <div
-                    className="text-sm font-semibold"
-                    style={{ color: "#f1f5f9", fontFamily: "'Space Grotesk', sans-serif", marginBottom: "0.15rem" }}
-                  >
-                    {link.value}
-                  </div>
-                  <div className="text-xs" style={{ color: "#475569" }}>
-                    {link.description}
-                  </div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)", marginBottom: 2 }}>{link.label}</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: "0.85rem", color: "var(--text-primary)" }}>{link.value}</div>
                 </div>
               </a>
             ))}
 
-            {/* WhatsApp highlight */}
-            <a
-              href="https://wa.me/918078276836?text=Hi%20Yedhu!%20I%20wanted%20to%20discuss%20a%20project%20with%20you."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-2xl p-5 flex items-center justify-center gap-2 text-sm font-semibold transition-all duration-300"
+            <a href="https://wa.me/918078276836" target="_blank" rel="noopener noreferrer"
               style={{
-                background: "linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))",
-                border: "1px solid rgba(34,197,94,0.25)",
-                color: "#22c55e",
-                fontFamily: "'Space Grotesk', sans-serif",
-                textDecoration: "none",
+                marginTop: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                background: "var(--accent)", border: "2px solid var(--border-color)",
+                padding: "13px", textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#0a0a0a",
+                transition: "all 0.15s",
               }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "rgba(34,197,94,0.2)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 0 20px rgba(34,197,94,0.2)";
-                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))";
-                (e.currentTarget as HTMLElement).style.boxShadow = "";
-                (e.currentTarget as HTMLElement).style.transform = "";
-              }}
-            >
-              <MessageCircle size={17} />
-              Message me on WhatsApp
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent)"; (e.currentTarget as HTMLElement).style.color = "#0a0a0a"; }}>
+              <MessageCircle size={16} /> Message me on WhatsApp
             </a>
           </div>
 
-          {/* Right — Contact Form */}
-          <div className="glass rounded-2xl p-6">
-            {status === "success" ? (
-              <div
-                className="flex flex-col items-center justify-center text-center py-8"
-                style={{ gap: "1rem" }}
-              >
-                <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center"
-                  style={{ background: "rgba(34,197,94,0.12)", border: "1px solid rgba(34,197,94,0.25)" }}
-                >
-                  <CheckCircle size={28} style={{ color: "#22c55e" }} />
+          {/* Right — Form */}
+          <div className={`reveal-right ${inView ? "visible" : ""}`}>
+            {sent ? (
+              <div style={{ border: "2px solid var(--border-color)", padding: "2rem", textAlign: "center", background: "var(--card-bg)" }}>
+                <div style={{ width: 48, height: 48, background: "var(--accent)", border: "2px solid var(--border-color)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>
+                  <Send size={20} color="#0a0a0a" />
                 </div>
-                <h3 className="text-base font-semibold" style={{ color: "#f1f5f9", fontFamily: "'Space Grotesk', sans-serif" }}>
-                  Message Sent!
-                </h3>
-                <p className="text-sm" style={{ color: "#64748b" }}>
-                  Thanks for reaching out. I&apos;ll get back to you within 24 hours.
-                </p>
-                <button
-                  onClick={() => setStatus("idle")}
-                  className="btn-secondary text-sm py-2 px-4"
-                >
-                  Send Another
-                </button>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "1.1rem", marginBottom: 8, color: "var(--text-primary)" }}>Message Sent!</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>I&apos;ll get back to you within 24 hours.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {/* Name */}
-                <div>
-                  <label htmlFor="contact-name" style={labelStyle}>Name</label>
-                  <div style={{ position: "relative" }}>
-                    <User
-                      size={14}
-                      style={{
-                        position: "absolute", left: "0.875rem", top: "50%",
-                        transform: "translateY(-50%)", color: "#475569", pointerEvents: "none",
-                      }}
-                    />
-                    <input
-                      id="contact-name"
-                      name="name"
-                      type="text"
-                      autoComplete="name"
-                      placeholder="Your full name"
-                      value={form.name}
-                      onChange={handleChange}
-                      maxLength={80}
-                      required
-                      style={{ ...inputStyle, paddingLeft: "2.25rem" }}
-                      onFocus={(e) => {
-                        (e.target as HTMLInputElement).style.borderColor = "rgba(0,102,255,0.5)";
-                        (e.target as HTMLInputElement).style.boxShadow = "0 0 0 3px rgba(0,102,255,0.08)";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLInputElement).style.borderColor = "rgba(255,255,255,0.08)";
-                        (e.target as HTMLInputElement).style.boxShadow = "none";
-                      }}
-                    />
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                {[
+                  { label: "Name", type: "text", field: "name", placeholder: "Your full name", icon: <User size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} /> },
+                  { label: "Email", type: "email", field: "email", placeholder: "your@email.com", icon: <Mail size={14} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} /> },
+                ].map(({ label, type, field, placeholder, icon }) => (
+                  <div key={field}>
+                    <label style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>{label}</label>
+                    <div style={{ position: "relative" }}>
+                      {icon}
+                      <input type={type} placeholder={placeholder} required
+                        value={formData[field as keyof typeof formData]}
+                        onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
+                        style={{ ...inputStyle, paddingLeft: 36 }} />
+                    </div>
                   </div>
-                </div>
+                ))}
 
-                {/* Email */}
                 <div>
-                  <label htmlFor="contact-email" style={labelStyle}>Email</label>
+                  <label style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>Project Type</label>
                   <div style={{ position: "relative" }}>
-                    <Mail
-                      size={14}
-                      style={{
-                        position: "absolute", left: "0.875rem", top: "50%",
-                        transform: "translateY(-50%)", color: "#475569", pointerEvents: "none",
-                      }}
-                    />
-                    <input
-                      id="contact-email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      placeholder="your@email.com"
-                      value={form.email}
-                      onChange={handleChange}
-                      maxLength={120}
-                      required
-                      style={{ ...inputStyle, paddingLeft: "2.25rem" }}
-                      onFocus={(e) => {
-                        (e.target as HTMLInputElement).style.borderColor = "rgba(0,102,255,0.5)";
-                        (e.target as HTMLInputElement).style.boxShadow = "0 0 0 3px rgba(0,102,255,0.08)";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLInputElement).style.borderColor = "rgba(255,255,255,0.08)";
-                        (e.target as HTMLInputElement).style.boxShadow = "none";
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Project type */}
-                <div>
-                  <label htmlFor="contact-project" style={labelStyle}>Project Type</label>
-                  <div style={{ position: "relative" }}>
-                    <FileText
-                      size={14}
-                      style={{
-                        position: "absolute", left: "0.875rem", top: "50%",
-                        transform: "translateY(-50%)", color: "#475569", pointerEvents: "none", zIndex: 1,
-                      }}
-                    />
-                    <select
-                      id="contact-project"
-                      name="projectType"
-                      value={form.projectType}
-                      onChange={handleChange}
-                      required
-                      style={{
-                        ...inputStyle,
-                        paddingLeft: "2.25rem",
-                        appearance: "none",
-                        cursor: "pointer",
-                        color: form.projectType ? "#f1f5f9" : "#475569",
-                      }}
-                      onFocus={(e) => {
-                        (e.target as HTMLSelectElement).style.borderColor = "rgba(0,102,255,0.5)";
-                        (e.target as HTMLSelectElement).style.boxShadow = "0 0 0 3px rgba(0,102,255,0.08)";
-                      }}
-                      onBlur={(e) => {
-                        (e.target as HTMLSelectElement).style.borderColor = "rgba(255,255,255,0.08)";
-                        (e.target as HTMLSelectElement).style.boxShadow = "none";
-                      }}
-                    >
-                      <option value="" disabled style={{ background: "#0a1024" }}>
-                        Select project type
-                      </option>
-                      {projectTypes.map((pt) => (
-                        <option key={pt} value={pt} style={{ background: "#0a1024" }}>
-                          {pt}
-                        </option>
+                    <select value={formData.projectType} onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                      style={{ ...inputStyle, appearance: "none", paddingRight: 36 }}>
+                      <option value="">Select project type</option>
+                      {["Automation System", "Web Application", "POS System", "WhatsApp Bot", "ML / Data Project", "Other"].map(o => (
+                        <option key={o} value={o}>{o}</option>
                       ))}
                     </select>
+                    <ChevronDown size={14} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)", pointerEvents: "none" }} />
                   </div>
                 </div>
 
-                {/* Message */}
                 <div>
-                  <label htmlFor="contact-message" style={labelStyle}>Message</label>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    placeholder="Describe your project, timeline, and budget..."
-                    value={form.message}
-                    onChange={handleChange}
-                    maxLength={2000}
-                    rows={4}
-                    required
-                    style={{
-                      ...inputStyle,
-                      resize: "vertical",
-                      minHeight: "110px",
-                    }}
-                    onFocus={(e) => {
-                      (e.target as HTMLTextAreaElement).style.borderColor = "rgba(0,102,255,0.5)";
-                      (e.target as HTMLTextAreaElement).style.boxShadow = "0 0 0 3px rgba(0,102,255,0.08)";
-                    }}
-                    onBlur={(e) => {
-                      (e.target as HTMLTextAreaElement).style.borderColor = "rgba(255,255,255,0.08)";
-                      (e.target as HTMLTextAreaElement).style.boxShadow = "none";
-                    }}
-                  />
-                  <div className="text-right text-xs mt-1" style={{ color: "#334155" }}>
-                    {form.message.length}/2000
-                  </div>
+                  <label style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>Message</label>
+                  <textarea placeholder="Describe your project, timeline, and budget..." required rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value.replace(/[<>]/g, "") })}
+                    style={{ ...inputStyle, resize: "vertical", minHeight: 110 }} />
                 </div>
 
-                {/* Error */}
-                {error && (
-                  <div
-                    className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-xs"
-                    style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#f87171" }}
-                  >
-                    <AlertCircle size={13} />
-                    {error}
-                  </div>
-                )}
-
-                {/* Submit */}
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className="btn-primary justify-center w-full"
-                  style={{ opacity: status === "submitting" ? 0.75 : 1 }}
-                >
-                  {status === "submitting" ? (
-                    <>
-                      <Loader2 size={15} style={{ animation: "spin 1s linear infinite" }} />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send size={15} />
-                      Send Message
-                    </>
-                  )}
+                <button type="submit" disabled={sending} style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                  background: sending ? "var(--border-light)" : "var(--accent)",
+                  border: "2px solid var(--border-color)", padding: "13px",
+                  fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700,
+                  fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.06em",
+                  color: "#0a0a0a", cursor: sending ? "not-allowed" : "pointer", transition: "all 0.15s",
+                }}>
+                  <Send size={15} />{sending ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}
@@ -470,12 +157,8 @@ export default function Contact() {
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      ` }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "3px", background: "var(--divider)" }} />
+      <style dangerouslySetInnerHTML={{ __html: `@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr !important; } }` }} />
     </section>
   );
 }
