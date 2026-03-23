@@ -80,7 +80,7 @@ export default function About() {
                 <div key={h.label}
                   className={`reveal reveal-delay-${i + 1} ${inView ? "visible" : ""}`}
                   style={{
-                    background: "var(--text-primary)", border: "2px solid var(--border-color)",
+                    background: "var(--card-bg)", border: "2px solid var(--border-color)",
                     padding: "1rem", display: "flex", alignItems: "center", gap: 10,
                     transition: "transform 0.2s", cursor: "default",
                   }}
@@ -88,7 +88,7 @@ export default function About() {
                   onMouseLeave={(e) => (e.currentTarget.style.transform = "")}
                 >
                   <h.icon size={16} style={{ color: h.accentColor, flexShrink: 0 }} />
-                  <span style={{ fontSize: "0.78rem", fontWeight: 700, color: h.accentColor, fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.3 }}>
+                  <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-primary)", fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.3 }}>
                     {h.label}
                   </span>
                 </div>

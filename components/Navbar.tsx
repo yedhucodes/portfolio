@@ -9,6 +9,7 @@ const navLinks = [
   { href: "#skills",   label: "Skills" },
   { href: "#projects", label: "Projects" },
   { href: "#services", label: "Services" },
+  { href: "#hobbies",  label: "Hobbies" },
   { href: "#contact",  label: "Contact" },
 ];
 
@@ -42,21 +43,14 @@ export default function Navbar() {
         height: 68,
       }}>
         {/* Logo */}
-        <a href="#" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+        <a href="#" style={{ textDecoration: "none" }}>
           <div style={{
-            width: 36, height: 36,
-            background: "var(--text-primary)",
-            display: "flex", alignItems: "center", justifyContent: "center",
+            background: "var(--accent)", color: "#0a0a0a",
+            padding: "4px 12px", display: "inline-block",
             fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 800, fontSize: "1rem", color: "var(--accent)",
-          }}>Y</div>
-          <span style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 800, fontSize: "1rem", color: "var(--text-primary)",
-            letterSpacing: "-0.03em",
-          }}>
-            yedhu<span style={{ color: "#84cc16" }}>.codes</span>
-          </span>
+            fontWeight: 900, fontSize: "1.2rem",
+            letterSpacing: "-0.02em",
+          }}>YEDHU.CODES</div>
         </a>
 
         {/* Desktop Nav */}
@@ -97,17 +91,16 @@ export default function Navbar() {
           {/* CTA */}
           <a href="#contact" style={{
             display: "inline-flex", alignItems: "center",
-            background: "var(--accent)", color: "var(--text-primary)",
-            border: `2px solid var(--text-primary)`,
-            padding: "9px 20px",
+            background: "var(--accent)", color: "#0a0a0a",
+            padding: "8px 20px",
             fontFamily: "'Space Grotesk', sans-serif",
-            fontWeight: 700, fontSize: "0.78rem",
+            fontWeight: 800, fontSize: "0.85rem",
             letterSpacing: "0.04em", textTransform: "uppercase",
             textDecoration: "none", cursor: "pointer",
             transition: "all 0.15s",
           }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent)"; (e.currentTarget as HTMLElement).style.color = "var(--text-primary)"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#fff"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent)"; }}
           >Hire Me</a>
         </div>
 
@@ -146,12 +139,15 @@ export default function Navbar() {
           ))}
           <a href="#contact" onClick={() => setMenuOpen(false)} style={{
             display: "flex", marginTop: "1rem", justifyContent: "center",
-            background: "var(--accent)", color: "var(--text-primary)",
-            border: `2px solid var(--text-primary)`, padding: "12px",
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700,
+            background: "var(--accent)", color: "#0a0a0a",
+            padding: "12px",
+            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 800,
             fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.06em",
-            textDecoration: "none",
-          }}>Hire Me</a>
+            textDecoration: "none", transition: "all 0.15s"
+          }}
+             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#fff"; }}
+             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent)"; }}
+          >Hire Me</a>
         </div>
       )}
 

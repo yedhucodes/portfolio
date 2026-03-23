@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   },
 };
 
+import SmoothScrolling from "@/components/SmoothScrolling";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,7 +52,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <SmoothScrolling>{children}</SmoothScrolling>
+        </ThemeProvider>
       </body>
     </html>
   );

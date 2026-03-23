@@ -12,10 +12,7 @@ export function useInView(threshold = 0.15) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          observer.disconnect(); // only trigger once
-        }
+        setInView(entry.isIntersecting);
       },
       { threshold }
     );

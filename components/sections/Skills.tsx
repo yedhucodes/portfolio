@@ -3,12 +3,13 @@
 import { useInView } from "@/hooks/useInView";
 
 const skillCategories = [
-  { title: "Programming",  color: "#a3e635", skills: ["Python", "JavaScript", "TypeScript", "HTML/CSS"] },
-  { title: "Frameworks",   color: "#fbbf24", skills: ["Flask", "Django", "Next.js", "React"] },
-  { title: "Automation",   color: "#60a5fa", skills: ["n8n", "API Integrations", "Webhooks", "WhatsApp API"] },
-  { title: "Data & ML",    color: "#f472b6", skills: ["Pandas", "NumPy", "scikit-learn", "OpenCV"] },
-  { title: "Tools",        color: "#34d399", skills: ["Git", "GitHub", "Figma", "WordPress"] },
-  { title: "Databases",    color: "#fb923c", skills: ["MongoDB", "PostgreSQL", "SQLite", "Firebase"] },
+  { title: "Programming",  color: "#99e420ff", skills: ["Python", "JavaScript", "TypeScript", "HTML/CSS"] },
+  { title: "Frameworks",   color: "#ebb42aff", skills: ["Flask", "Django", "Next.js", "React"] },
+  { title: "Automation",   color: "#0057c2ff", skills: ["n8n", "API Integrations", "Webhooks", "WhatsApp API"] },
+  { title: "Data & ML",    color: "#e40f7dff", skills: ["Pandas", "NumPy", "scikit-learn", "OpenCV"] },
+  { title: "Tools",        color: "#0de897ff", skills: ["Git", "GitHub", "Figma", "WordPress"] },
+  { title: "Databases",    color: "#ee7919ff", skills: ["MongoDB", "PostgreSQL", "SQLite", "Firebase"] },
+  { title: "Prompt Eng & AI", color: "#7d20daff", skills: ["ChatGPT", "Claude", "Gemini", "Midjourney", "LangChain", "RAG", "Fine-tuning", "Prompt Design"] },
 ];
 
 export default function Skills() {

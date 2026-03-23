@@ -7,7 +7,7 @@ import { Mail, MessageCircle, Github, Send, User, ChevronDown } from "lucide-rea
 const socialLinks = [
   { icon: Mail,          label: "Email",    value: "yedhukrishnantv64@gmail.com", href: "mailto:yedhukrishnantv64@gmail.com", color: "#a3e635" },
   { icon: MessageCircle, label: "WhatsApp", value: "+91 8078276836",               href: "https://wa.me/918078276836",         color: "#fbbf24" },
-  { icon: Github,        label: "GitHub",   value: "github.com/xLUFFY007",         href: "https://github.com/xLUFFY007",       color: "#60a5fa" },
+  { icon: Github,        label: "GitHub",   value: "github.com/yedhucodes",         href: "https://github.com/yedhucodes",       color: "#60a5fa" },
 ];
 
 export default function Contact() {
@@ -29,7 +29,7 @@ export default function Contact() {
   const inputStyle: React.CSSProperties = {
     width: "100%", padding: "12px 14px",
     border: "2px solid var(--border-color)", background: "var(--card-bg)",
-    fontFamily: "'Space Grotesk', sans-serif", fontSize: "0.88rem",
+    fontFamily: "'Space Grotesk', sans-serif", fontSize: "1rem",
     color: "var(--text-primary)", outline: "none", transition: "border-color 0.15s",
   };
 
@@ -65,8 +65,8 @@ export default function Contact() {
                   border: "2px solid var(--border-color)", background: "var(--card-bg)",
                   padding: "1rem", textDecoration: "none", transition: "transform 0.15s, background 0.15s",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.transform = "translate(-3px, -3px)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--card-bg)"; (e.currentTarget as HTMLElement).style.transform = ""; }}>
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translate(-3px, -3px)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ""; }}>
                 <div style={{ width: 40, height: 40, background: link.color, border: "2px solid var(--border-color)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <link.icon size={18} color="#0a0a0a" />
                 </div>
@@ -85,7 +85,7 @@ export default function Contact() {
                 fontWeight: 700, fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "#0a0a0a",
                 transition: "all 0.15s",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#0a0a0a"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--accent)"; (e.currentTarget as HTMLElement).style.color = "#0a0a0a"; }}>
               <MessageCircle size={16} /> Message me on WhatsApp
             </a>

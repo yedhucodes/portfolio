@@ -32,7 +32,7 @@ export default function Projects() {
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "0.875rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "0.875rem" }}>
           {projects.map((project, i) => (
             <div key={project.title}
               className={`reveal reveal-delay-${Math.min(i + 1, 5)} ${inView ? "visible" : ""}`}
@@ -80,14 +80,14 @@ export default function Projects() {
             </div>
           ))}
 
-          <a href="https://github.com/xLUFFY007" target="_blank" rel="noopener noreferrer"
+          <a href="https://github.com/yedhucodes" target="_blank" rel="noopener noreferrer"
             className={`reveal reveal-delay-5 ${inView ? "visible" : ""}`}
             style={{
               border: "2px dashed var(--border-light)", background: "transparent",
               display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
               textAlign: "center", minHeight: 200, textDecoration: "none", transition: "all 0.15s",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.background = "var(--text-primary)"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--text-primary)"; (e.currentTarget as HTMLElement).style.background = "var(--card-tag-bg)"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border-light)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
           >
             <ArrowUpRight size={28} style={{ color: "var(--text-muted)", marginBottom: 8 }} />

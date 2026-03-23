@@ -164,12 +164,13 @@ h1, h2, h3, h4 {
 
 /* ─── Scroll-reveal animations ─── */
 .reveal {
-  opacity: 1;
-  transform: translateY(24px);
-  transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
-  will-change: transform;
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  filter: blur(10px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity, filter;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 
 .reveal-delay-1 { transition-delay: 0.08s; }
 .reveal-delay-2 { transition-delay: 0.16s; }
@@ -178,25 +179,28 @@ h1, h2, h3, h4 {
 .reveal-delay-5 { transition-delay: 0.40s; }
 
 .reveal-left {
-  opacity: 1;
-  transform: translateX(-24px);
-  transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0;
+  transform: translateX(-40px) scale(0.96);
+  filter: blur(10px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-left.visible { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
 
 .reveal-right {
-  opacity: 1;
-  transform: translateX(24px);
-  transition: transform 0.65s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0;
+  transform: translateX(40px) scale(0.96);
+  filter: blur(10px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-right.visible { opacity: 1; transform: translateX(0); }
+.reveal-right.visible { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
 
 .reveal-scale {
-  opacity: 1;
-  transform: scale(0.96);
-  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0;
+  transform: scale(0.9);
+  filter: blur(10px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-scale.visible { opacity: 1; transform: scale(1); }
+.reveal-scale.visible { opacity: 1; transform: scale(1); filter: blur(0); }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal-left, .reveal-right, .reveal-scale { transform: none; transition: none; }
